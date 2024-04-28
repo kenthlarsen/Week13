@@ -14,29 +14,27 @@ import lombok.extern.slf4j.Slf4j;
 import pet.store.service.PetStoreService;
 
 @RestController
-@RequestMapping("/pet_store")
+@RequestMapping("/")
 @Slf4j
-
 public class PetStoreController {
-	
+
 	@Autowired
 	public PetStoreService petStoreService;
 
 	@PostMapping("/pet_store")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public PetStoreData savePetStore (@RequestBody PetStoreData petStoreData) {
+	public PetStoreData savePetStore(@RequestBody PetStoreData petStoreData) {
 		log.info("Adding pet store {}", petStoreData);
-		return PetStoreService.savePetStore(petStoreData);
+		return petStoreService.savePetStore(petStoreData);
 
 	}
-	
+
 	@PutMapping("/pet_store/{petStoreId}")
-	public PetStoreData updatePetStore (@RequestBody PetStoreData petStoreData, @PathVariable Long petStoreId) {
+	public PetStoreData updatePetStore(@RequestBody PetStoreData petStoreData, @PathVariable Long petStoreId) {
 		petStoreData.setPetStoreId(petStoreId);
 		log.info("Updated Pet Store Id={}", petStoreData);
 		return petStoreService.savePetStore(petStoreData);
-		
+
 	}
-	
-		
+
 }
