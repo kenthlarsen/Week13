@@ -1,6 +1,5 @@
 package pet.store.service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -19,20 +18,20 @@ public class PetStoreService {
 
 	public PetStoreData savePetStore(PetStoreData petStoreData) {
 		Long petStoreId = petStoreData.getPetStoreId();
-		PetStore petStore = findorCreatePetStore(petStoreId);
-
+		PetStore petStore = findOrCreatePetStore(petStoreId);
 		copyPetStoreFields(petStore, petStoreData);
-		return new PetStoreData(petStoreDao.save(petStore));
+		petStore = petStoreDao.save(petStore);
+		return petStoreData;
 	}
 
-	private PetStore findorCreatePetStore(Long petStoreId) {
+	private PetStore findOrCreatePetStore(Long petStoreId) {
 		if (Objects.isNull(petStoreId)) {
 			return new PetStore();
 		} else {
 			try {
 				return findPetStoreById(petStoreId);
 			} catch (Exception e) {
-				return new PetStore();
+				throw e;
 			}
 		}
 
@@ -40,8 +39,7 @@ public class PetStoreService {
 
 	private PetStore findPetStoreById(Long petStoreId) {
 		return petStoreDao.findById(petStoreId)
-				.orElseThrow(() -> new NoSuchElementException("Pet Store with ID=" + petStoreId + "was not found."));
-
+				.orElseThrow(() -> new NoSuchElementException("Pet Store with ID=" + petStoreId + " was not found."));
 	}
 
 	private void copyPetStoreFields(PetStore petStore, PetStoreData petStoreData) {
@@ -54,8 +52,6 @@ public class PetStoreService {
 		petStore.setPetStorePhone(petStoreData.getPetStorePhone());
 	}
 
-	
 //@Autowired
 //private EmployeeDao employeeDao;
-
 }
