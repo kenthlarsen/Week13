@@ -3,6 +3,8 @@ package pet.store.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,13 +31,13 @@ public class PetStore {
 	private String petStoreZip;
 	private String petStorePhone;
 
+	@JsonIgnore
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "pet_store_customer", joinColumns = @JoinColumn(name = "pet_store_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
 	private Set<Customer> customers = new HashSet<>();
 
-//	@JoinColumn(name = "pet_store_pet_store_id")
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@OneToMany(mappedBy = "petStore", cascade = CascadeType.ALL, orphanRemoval = true)

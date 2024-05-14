@@ -31,7 +31,6 @@ public class PetStoreController {
 	public PetStoreData savePetStore(@RequestBody PetStoreData petStoreData) {
 		log.info("Adding pet store {}", petStoreData);
 		return petStoreService.savePetStore(petStoreData);
-
 	}
 
 	@PutMapping("/pet_store/{petStoreId}")
@@ -39,45 +38,39 @@ public class PetStoreController {
 		petStoreData.setPetStoreId(petStoreId);
 		log.info("Updated Pet Store Id={}", petStoreData);
 		return petStoreService.savePetStore(petStoreData);
-
 	}
+
 	@PostMapping("/{petStoreId}/employee")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public PetStoreEmployee addEmployee(@PathVariable Long petStoreId, @RequestBody PetStoreEmployee petStoreEmployee) {
-		
-			log.info("Creating employee {} for pet store with ID={}", petStoreEmployee, petStoreId);
-			
-			return petStoreService.saveEmployee(petStoreId, petStoreEmployee);
+	public EmployeeData addEmployee(@PathVariable Long petStoreId, @RequestBody EmployeeData petStoreEmployee) {
+		log.info("Creating employee {} for pet store with ID={}", petStoreEmployee, petStoreId);
+		return petStoreService.saveEmployee(petStoreId, petStoreEmployee);
 	}
-	
+
 	@PostMapping("/{petStoreId}/customer")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public PetStoreCustomer addPetStoreCustomer(@PathVariable Long petStoreId, @RequestBody PetStoreCustomer petStoreCustomer) {
-
+	public CustomerData addPetStoreCustomer(@PathVariable Long petStoreId, @RequestBody CustomerData petStoreCustomer) {
 		log.info("Creating customer {} for pet store with ID={}", petStoreCustomer, petStoreId);
-
 		return petStoreService.saveCustomer(petStoreId, petStoreCustomer);
 	}
-	
+
 	@GetMapping
 	public List<PetStoreData> retrieveAllPetStores() {
 		log.info("Retrieving all Pet Stores.");
 		return petStoreService.retrieveAllPetStores();
 	}
-	
+
 	@GetMapping("/{petStoreId}")
 	public PetStoreData retrievePetStoreById(@PathVariable Long petStoreId) {
 		log.info("Retrieving Pet Store with ID={}", petStoreId);
-		return petStoreService.findPetStoreById(petStoreId);
-		
+		return petStoreService.getPetStoreById(petStoreId);
 	}
-	
+
 	@DeleteMapping("/pet_store/{petStoreId}")
 	public Map<String, String> deletePetStoreById(@PathVariable Long petStoreId) {
 		log.info("Deleting Pet Store with ID=()", petStoreId);
-		
 		petStoreService.deletePetStoreById(petStoreId);
-		
 		return Map.of("message", "Deletion of Pet Store with ID=" + petStoreId + " was successful.");
 	}
+	
 }
